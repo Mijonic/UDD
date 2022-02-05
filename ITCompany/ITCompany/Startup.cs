@@ -36,7 +36,9 @@ namespace ITCompany
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {        
-            services.AddElasticsearch(Configuration);         
+            services.AddElasticsearch(Configuration);
+
+            services.AddScoped<IPDFService, PDFService>();
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IServiceWrapper, ServiceWrapper>();
 

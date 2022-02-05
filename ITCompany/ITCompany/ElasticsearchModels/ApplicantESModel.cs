@@ -13,8 +13,8 @@ namespace ITCompany.ElasticsearchModels
         public string Education { get; set; }
         public string City { get; set; }
         public string Description { get; set; }
-        public Guid CoverLetterId { get; set; }
-        public Guid CvId { get; set; }
+        public string CoverLetterId { get; set; }
+        public string CvId { get; set; }
         public string CoverLetterContent { get; set; }
         public string CvContent { get; set; }
     }

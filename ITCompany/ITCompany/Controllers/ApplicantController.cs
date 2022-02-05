@@ -14,10 +14,12 @@ namespace ITCompany.Controllers
     public class ApplicantController : ControllerBase
     {
         private readonly IServiceWrapper _serviceWrapper;
+        private readonly IPDFService _pdfService;
 
-        public ApplicantController(IServiceWrapper serviceWrapper)
+        public ApplicantController(IServiceWrapper serviceWrapper, IPDFService pdfService)
         {
             _serviceWrapper = serviceWrapper;
+            _pdfService = pdfService;
         }
 
         [HttpPost]
@@ -35,6 +37,27 @@ namespace ITCompany.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+
+        [HttpPost("/attachments/{applicantId}")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [RequestSizeLimit(long.MaxValue)]
+        public async Task<IActionResult> AttachFileAsync(IFormFile file, bool isCV, Guid applicantId)
+        {
+            try
+            {
+                await _pdfService.AttachFileToApplicant(file, applicantId, isCV);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+          
         }
     }
 }

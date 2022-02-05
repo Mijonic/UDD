@@ -17,7 +17,7 @@ namespace ITCompany.Models
         public string Street { get; set; }
         public string Country { get; set; }
         public string Description { get; set; }
-        public Guid CoverLetterId { get; set; }
-        public Guid CvId { get; set; }
+        public string CoverLetterId { get; set; }
+        public string CvId { get; set; }
     }
 }

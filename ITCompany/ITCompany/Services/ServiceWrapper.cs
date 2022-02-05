@@ -33,7 +33,7 @@ namespace ITCompany.Services
 
             return _mapper.Map<ApplicantDto>(newApplicant);
 
-
         }
+
     }
 }
