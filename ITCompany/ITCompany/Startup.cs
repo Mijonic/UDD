@@ -1,11 +1,15 @@
+using AutoMapper;
 using Elasticsearch.Net;
 using ITCompany.Extensions;
+using ITCompany.Infrastructure;
 using ITCompany.Interfaces;
+using ITCompany.Mapping;
 using ITCompany.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +19,7 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ITCompany
@@ -30,16 +35,23 @@ namespace ITCompany
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            //var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
-            //var settings = new ConnectionSettings(pool)
-            //    .DefaultIndex("testic");
-            //var client = new ElasticClient(settings);
-            //services.AddSingleton(client);
-            services.AddElasticsearch(Configuration);
+        {        
+            services.AddElasticsearch(Configuration);         
             services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IServiceWrapper, ServiceWrapper>();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+                                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddDbContext<ITCompanyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ITCompanyDatabase")));
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITCompany", Version = "v1" });

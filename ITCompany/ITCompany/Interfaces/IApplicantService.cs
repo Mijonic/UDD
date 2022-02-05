@@ -1,4 +1,6 @@
-﻿using ITCompany.ElasticsearchModels;
+﻿using ITCompany.Dtos;
+using ITCompany.ElasticsearchModels;
+using ITCompany.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,8 @@ namespace ITCompany.Interfaces
 {
     public interface IApplicantService
     {
-        Task SaveSingleAsync(ApplicantESModel applicant);
-      
+        Task SaveApplicantESAsync(ApplicantESModel applicant);
+        Task<Applicant> SaveApplicantDbAsync(Applicant applicant);
+
     }
 }

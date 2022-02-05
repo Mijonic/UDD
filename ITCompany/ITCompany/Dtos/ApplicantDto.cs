@@ -1,18 +1,17 @@
-﻿using ITCompany.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ITCompany.Models
+namespace ITCompany.Dtos
 {
-    public class Applicant
+    public class ApplicantDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public EducationLevel Education { get; set; }
+        public string Education { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public string Country { get; set; }
