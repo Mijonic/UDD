@@ -12,6 +12,12 @@ namespace ITCompany.Interfaces
     {
         Task SaveApplicantESAsync(ApplicantESModel applicant);
         Task<Applicant> SaveApplicantDbAsync(Applicant applicant);
+        Task<List<SearchResultDto>> SearchApplicantsByNameAndSurname(string name, string surname);
+        Task<List<SearchResultDto>> SearchApplicantsByEducation(string education);
+        Task<List<SearchResultDto>> SearchApplicantsByCvContent(string content);
+        Task<List<SearchResultDto>> SearchApplicantsByAllFields(string text);
+
+
 
     }
 }

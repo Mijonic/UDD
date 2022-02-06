@@ -38,7 +38,42 @@ namespace ITCompany.Extensions
         private static void CreateIndex(IElasticClient client, string indexName)
         {
             var createIndexResponse = client.Indices.Create(indexName,
-           index => index.Map<ApplicantESModel>(x => x.AutoMap()));
+           index => index.Map<ApplicantESModel>(x => 
+                x.Properties(ps => ps
+                
+                    .Text(s => s
+                        .Name(n => n.Name)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.Surname)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.Education)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.Education)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.City)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.Description)
+                        .Analyzer("serbian"))
+                     .Text(s => s
+                        .Name(n => n.CoverLetterId))
+                     .Text(s => s
+                        .Name(n => n.CvId))
+                     .Text(s => s
+                        .Name(n => n.CoverLetterContent)
+                        .Analyzer("serbian"))
+                    .Text(s => s
+                        .Name(n => n.CvContent)
+                        .Analyzer("serbian"))
+                    .GeoPoint(t => t
+                           .Name(n => n.GeoLocation)))
+
+
+           ));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,5 +18,6 @@ namespace ITCompany.ElasticsearchModels
         public string CvId { get; set; }
         public string CoverLetterContent { get; set; }
         public string CvContent { get; set; }
+        public GeoLocation GeoLocation { get; set; }
     }
 }

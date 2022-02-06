@@ -20,6 +20,8 @@ namespace ITCompany.Mapping
 
             CreateMap<ApplicantESModel, ApplicantDto>().ReverseMap();
 
+            CreateMap<ApplicantESModel, SearchResultDto>().ReverseMap();
+
         }
     }
 }

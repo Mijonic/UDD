@@ -20,7 +20,7 @@ namespace ITCompany.Services
             _context = context;
         }
 
-        public async Task AttachFileToApplicant(IFormFile formFile, Guid applicantId, bool isCV)
+        public async Task<string> AttachFileToApplicant(IFormFile formFile, Guid applicantId, bool isCV)
         {
             Applicant applicant = _context.Applicants.Find(applicantId);
 
@@ -44,6 +44,8 @@ namespace ITCompany.Services
                 applicant.CoverLetterId = id;
 
             await _context.SaveChangesAsync();
+
+            return filePath;
 
         }
     }

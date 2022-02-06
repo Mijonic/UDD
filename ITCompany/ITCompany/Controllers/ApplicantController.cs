@@ -15,11 +15,13 @@ namespace ITCompany.Controllers
     {
         private readonly IServiceWrapper _serviceWrapper;
         private readonly IPDFService _pdfService;
+        private readonly IApplicantService _applicantService;
 
-        public ApplicantController(IServiceWrapper serviceWrapper, IPDFService pdfService)
+        public ApplicantController(IServiceWrapper serviceWrapper, IPDFService pdfService, IApplicantService applicationService)
         {
             _serviceWrapper = serviceWrapper;
             _pdfService = pdfService;
+            _applicantService = applicationService;
         }
 
         [HttpPost]
@@ -32,9 +34,6 @@ namespace ITCompany.Controllers
             {
                 ApplicantDto insertedApplicant = await _serviceWrapper.InsertApplicant(applicant);
 
-                await _pdfService.AttachFileToApplicant(applicant.CvFile, insertedApplicant.Id, true);
-                await _pdfService.AttachFileToApplicant(applicant.CoverLetterFile, insertedApplicant.Id, false);
-
                 return CreatedAtAction(nameof(NewApplication), new { id = insertedApplicant.Id }, insertedApplicant);
             }
             catch (Exception e)
@@ -43,7 +42,70 @@ namespace ITCompany.Controllers
             }
         }
 
+
        
+        [HttpGet("search/name/{name}/surname/{surname}")]
+        public async Task<IActionResult> SearchByNameAndSurname(string name, string surname)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _applicantService.SearchApplicantsByNameAndSurname(name, surname);
+
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpGet("search/education/{education}")]
+        public async Task<IActionResult> SearchByEducation(string education)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _applicantService.SearchApplicantsByEducation(education);
+
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
+        [HttpGet("search/content/{content}")]
+        public async Task<IActionResult> SearchByContent(string content)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _applicantService.SearchApplicantsByCvContent(content);
+
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+        [HttpGet("search/all-fields/{text}")]
+        public async Task<IActionResult> SearchApplicantsByAllFields(string text)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _applicantService.SearchApplicantsByAllFields(text);
+
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
 
         //[HttpPost("/attachments/{applicantId}")]
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]

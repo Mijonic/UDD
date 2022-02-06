@@ -8,6 +8,6 @@ namespace ITCompany.Interfaces
 {
     public interface IPDFService
     {
-        Task AttachFileToApplicant(IFormFile formFile, Guid applicantId, bool isCV);
+        Task<string> AttachFileToApplicant(IFormFile formFile, Guid applicantId, bool isCV);
     }
 }
