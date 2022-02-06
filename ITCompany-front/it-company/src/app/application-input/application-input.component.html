@@ -1,0 +1,55 @@
+
+<div class="container mt-5">
+    <form [formGroup]="newApplicantForm" (ngSubmit)="saveChanges()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="name"  required formControlName="nameControl">
+        </div>
+        <div class="form-group">
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" id="surname" placeholder="surname"  required formControlName="surnameControl">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required formControlName="emailControl">
+        </div>
+        <div class="form-group">
+            <label for="street">Street</label>
+            <input type="text" class="form-control" id="street" placeholder="street"  required formControlName="streetControl">
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" placeholder="city"  required formControlName="cityControl">
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" class="form-control" id="country" placeholder="country"  required formControlName="countryControl">
+        </div>
+        <div class="form-group mt-2">
+            <label for="education">Education</label>
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example"  required formControlName="educationControl">
+                <option *ngFor="let educationLevel of educationLevels" value="{{educationLevel.value}}">{{educationLevel.display}}</option>
+              </select>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" placeholder="description"  required formControlName="descriptionControl">
+        </div>
+
+        <div class="form-group">
+            <label for="cvFile">CV</label>
+            <input type="file" class="form-control" id="cvFile" placeholder="CV file"  required (change)="onFileSelectedCV($event)">
+        </div>
+
+        <div class="form-group">
+            <label for="coverLetterFile">Cover Letter</label>
+            <input type="file" class="form-control" id="coverLetterFile" placeholder="Cover Letter"  required  (change)="onFileSelectedCoverLetter($event)">
+        </div>
+
+
+
+
+
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </form>
+</div>

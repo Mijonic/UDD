@@ -26,6 +26,7 @@ namespace ITCompany
 {
     public class Startup
     {
+        private readonly string _cors = "cors";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,7 +36,10 @@ namespace ITCompany
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {        
+        {
+
+        
+
             services.AddElasticsearch(Configuration);
 
             services.AddScoped<IPDFService, PDFService>();
@@ -58,7 +62,17 @@ namespace ITCompany
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITCompany", Version = "v1" });
             });
-           
+            
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _cors, builder => {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +86,8 @@ namespace ITCompany
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseRouting();
 
