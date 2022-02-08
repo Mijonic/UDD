@@ -1,5 +1,6 @@
 ﻿using ITCompany.Dtos;
 using ITCompany.ElasticsearchModels;
+using ITCompany.Enums;
 using ITCompany.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace ITCompany.Interfaces
         Task<List<SearchResultDto>> SearchApplicantsByCvContent(string content);
         Task<List<SearchResultDto>> SearchApplicantsByAllFields(string text);
         Task<List<SearchResultDto>> SearchApplicantsByCity(double lat, double lon, double radius);
+        Task<List<SearchResultDto>> SearchApplicantsWithOperator(string name, Operator operator1, string surname, Operator operator2, string education, Operator operator3, string cvContent);
 
 
     }

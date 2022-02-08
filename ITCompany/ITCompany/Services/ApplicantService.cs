@@ -157,6 +157,100 @@ namespace ITCompany.Services
             return resultsDto;
         }
 
+
+        public async Task<List<SearchResultDto>> SearchApplicantsWithOperator(string name, Enums.Operator operator1, string surname, Enums.Operator operator2, string education, Enums.Operator operator3, string cvContent)
+        {
+            List<bool> usedParameters = new List<bool>() { false, false, false, false };
+
+            List<QueryContainer> must = new List<QueryContainer>();
+            List<QueryContainer> should = new List<QueryContainer>();
+
+            MatchQuery nameQuery = new MatchQuery()
+            {
+                Field = "name",
+                Query = name
+            };
+
+            MatchQuery surnameQuery = new MatchQuery()
+            {
+                Field = "surname",
+                Query = surname
+            };
+
+            MatchQuery educationQuery = new MatchQuery()
+            {
+                Field = "education",
+                Query = education
+            };
+
+            MatchQuery cvContentQuery = new MatchQuery()
+            {
+                Field = "cvContent",
+                Query = cvContent
+            };
+
+
+            if (operator1 == Enums.Operator.AND)
+            {
+                must.Add(nameQuery);
+                must.Add(surnameQuery);
+
+                usedParameters[0] = true;
+                usedParameters[1] = true;
+            }
+
+
+            if (operator2 == Enums.Operator.AND)
+            {
+                if (!usedParameters[1])
+                {
+                    must.Add(surnameQuery);
+                }
+
+                must.Add(educationQuery);
+            }
+
+
+            if (operator3 == Enums.Operator.AND)
+            {
+                if (!usedParameters[2])
+                {
+                    must.Add(educationQuery);
+                }
+
+                must.Add(cvContentQuery);
+            }
+
+            if (!usedParameters[0])
+                should.Add(nameQuery);
+
+            if (!usedParameters[1])
+                should.Add(surnameQuery);
+
+            if (!usedParameters[2])
+                should.Add(educationQuery);
+
+            if (!usedParameters[3])
+                should.Add(cvContentQuery);
+
+
+
+            var searchResponse = await _client.SearchAsync<ApplicantESModel>(new SearchRequest<ApplicantESModel>
+            {
+                Query = new BoolQuery()
+                {
+                    Must = must,
+                    Should = should
+                }
+
+
+            });
+
+
+            return MapResults(searchResponse.Documents.ToList());
+
+        }
+
     }
 
    

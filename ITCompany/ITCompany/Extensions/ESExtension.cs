@@ -17,6 +17,7 @@ namespace ITCompany.Extensions
             var defaultIndex = configuration["elasticsearch:index"];
 
             var settings = new ConnectionSettings(new Uri(url))
+                .EnableDebugMode()
                 .DefaultIndex(defaultIndex);
 
             AddDefaultMappings(settings);

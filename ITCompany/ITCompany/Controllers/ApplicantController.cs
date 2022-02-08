@@ -121,24 +121,20 @@ namespace ITCompany.Controllers
         }
 
 
+        [HttpGet("search/{name}/{operator1}/{surname}/{operator2}/{education}/{operator3}/{cvContent}")]
+        public async Task<IActionResult> SearchApplicantsWithOperator(string name, Enums.Operator operator1, string surname, Enums.Operator operator2, string education, Enums.Operator operator3, string cvContent)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _applicantService.SearchApplicantsWithOperator(name, operator1, surname, operator2, education, operator3, cvContent);
 
-        //[HttpPost("/attachments/{applicantId}")]
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public async Task<IActionResult> AttachFileAsync(IFormFile file, Guid applicantId)
-        //{
-        //    try
-        //    {
-        //        await _pdfService.AttachFileToApplicant(file, applicantId, true);
-        //        return Ok();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e.Message);
-        //    }
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
 
-        //}
     }
 }
