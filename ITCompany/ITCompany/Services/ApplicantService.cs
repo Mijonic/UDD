@@ -122,6 +122,27 @@ namespace ITCompany.Services
             return MapResults(searchResponse.Documents.ToList());
         }
 
+        public async Task<List<SearchResultDto>> SearchApplicantsByCity(double lat, double lon, double radius)
+        {
+            var searchResponse = await _client.SearchAsync<ApplicantESModel>(s => s
+                .Query(q => q
+                        .GeoDistance(g => g
+                            .Boost(1.1)
+                            .Name("named_query")
+                            .Field(p => p.GeoLocation)
+                            .DistanceType(GeoDistanceType.Arc)
+                            .Location(lat, lon)
+                            .Distance(radius, DistanceUnit.Kilometers)
+                            .ValidationMethod(GeoValidationMethod.IgnoreMalformed)
+                        )
+                        ));
+
+
+
+            return MapResults(searchResponse.Documents.ToList());
+
+        }
+
 
         private List<SearchResultDto> MapResults(List<ApplicantESModel> results)
         {

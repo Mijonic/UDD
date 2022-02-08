@@ -105,6 +105,21 @@ namespace ITCompany.Controllers
             }
         }
 
+        [HttpGet("search/city/{city}/radius/{radius}")]
+        public async Task<IActionResult> SearchApplicantsByCity(string city, double radius)
+        {
+            try
+            {
+                List<SearchResultDto> searchResults = await _serviceWrapper.SearchApplicantsByCity(city, radius);
+
+                return Ok(searchResults);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
 
 
         //[HttpPost("/attachments/{applicantId}")]

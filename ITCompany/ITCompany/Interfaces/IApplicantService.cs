@@ -16,7 +16,7 @@ namespace ITCompany.Interfaces
         Task<List<SearchResultDto>> SearchApplicantsByEducation(string education);
         Task<List<SearchResultDto>> SearchApplicantsByCvContent(string content);
         Task<List<SearchResultDto>> SearchApplicantsByAllFields(string text);
-
+        Task<List<SearchResultDto>> SearchApplicantsByCity(double lat, double lon, double radius);
 
 
     }
