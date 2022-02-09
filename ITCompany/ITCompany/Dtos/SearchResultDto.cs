@@ -17,5 +17,6 @@ namespace ITCompany.Dtos
         public string CvId { get; set; }
         public string CoverLetterContent { get; set; }
         public string CvContent { get; set; }
+        public List<string> Highlights { get; set; }
     }
 }

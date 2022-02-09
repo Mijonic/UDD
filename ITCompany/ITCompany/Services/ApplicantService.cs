@@ -94,7 +94,8 @@ namespace ITCompany.Services
                     ))
             );
 
-            return MapResults(searchResponse.Documents.ToList());
+            //return MapResults(searchResponse.Documents.ToList());
+            return MapResultsWithHighlights(searchResponse);
         }
 
         public async Task<List<SearchResultDto>> SearchApplicantsByAllFields(string text)
@@ -116,10 +117,15 @@ namespace ITCompany.Services
                            
                     
                    )
-               )
+               ).Highlight(h => h
+                    .PreTags("<mark>")
+                    .PostTags("</mark>")
+                    .Fields(f => f.Field("*")))     
             );
 
-            return MapResults(searchResponse.Documents.ToList());
+            //return MapResults(searchResponse.Documents.ToList());
+
+            return MapResultsWithHighlights(searchResponse);
         }
 
         public async Task<List<SearchResultDto>> SearchApplicantsByCity(double lat, double lon, double radius)
@@ -140,6 +146,7 @@ namespace ITCompany.Services
 
 
             return MapResults(searchResponse.Documents.ToList());
+            
 
         }
 
@@ -155,6 +162,50 @@ namespace ITCompany.Services
             }
 
             return resultsDto;
+        }
+
+
+        private List<SearchResultDto> MapResultsWithHighlights(ISearchResponse<ApplicantESModel> queryResult)
+        {
+            List<SearchResultDto> resultsDto = new List<SearchResultDto>();
+
+            List<ApplicantESModel> results = queryResult.Documents.ToList();
+
+            foreach (var res in results)
+            {
+
+                var resultDto = _mapper.Map<SearchResultDto>(res);
+                resultDto.Highlights = GetHighlights(res.Id, queryResult?.Hits);
+                resultsDto.Add(resultDto);
+            }
+
+
+            return resultsDto;
+        }
+
+        private List<string> GetHighlights(Guid id, IReadOnlyCollection<IHit<ApplicantESModel>> hits)
+        {
+            List<string> listHighlights = new List<string>();
+
+            if (hits.Any())
+            {
+                foreach (var hit in hits)
+                {
+                    if (hit.Id.Equals(id.ToString()))
+                    {
+
+                        foreach (var highlight in hit.Highlight?.Values)
+                        {
+                            foreach (var value in highlight)
+                            {
+                                listHighlights.Add(value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return listHighlights;
         }
 
 
